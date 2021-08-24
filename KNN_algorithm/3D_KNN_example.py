@@ -48,11 +48,11 @@ while True:
             three += 1
 
     if (one > two and one > three) or (two > one and two > three) or (three > one and three > two):
-        if one > two >= three:
+        if one > two and one > three:
             print('This point is from green group!')
-        elif two > one >= three:
+        elif two > one and two > three:
             print('This point is from blue group!')
-        elif three > one >= two:
+        elif three > one and three > two:
             print('This point is from red group!')
 
         break
