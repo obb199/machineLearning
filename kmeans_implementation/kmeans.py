@@ -1,6 +1,4 @@
 from random import randint
-import matplotlib.pyplot as plt
-from mpl_toolkits import mplot3d
 
 class k_means:
     def __init__(self, n_clusters=2, max_iterations=100, distance_type='euclidian'):
