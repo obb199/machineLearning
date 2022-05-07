@@ -13,15 +13,15 @@ class k_means:
         return self.__centroids_positions
 
     def fit(self, points):
-        # inicializando aleatoriamente os centróides
+        #initialization of centroids localization randomly
         self.__centroids_positions = [[randint(0, 100) for _ in range(len(points[0]))] for _ in range(self.__n_clusters)]
 
         iters = -1
         while iters < self.__max_iterations:
             iters += 1
             distance_points = []
-
-            # calculando a distância de cada ponto até cada um dos centróides
+            
+            #calculating the distance from any point to any centroid
             for i in range(len(points)):
                 dist = []
                 for j in range(len(self.__centroids_positions)):
@@ -37,25 +37,26 @@ class k_means:
             sum_of_distances = [[0 for _ in points[0]] for _ in range(self.__n_clusters)]
 
             # calculando em qual centróide cada ponto está mais próximo
+            #calculating what centroid is closer to any point 
             partial_result = [index_smaller_element(p) for p in distance_points]
 
-            # evitando a divisão por zero
+            # Avoiding division by zero
             for i in range(len(elements_per_centroid)):
                 if elements_per_centroid[i] == 0:
                     elements_per_centroid[i] += 1
 
-            # calculando a soma das distâncias do centróide mais perto para cada ponto
+            #calculating the sum of distance from closer centroid and what centroid is
             for idx in range(len(partial_result)):
                 elements_per_centroid[partial_result[idx]] += 1
                 for dim in range(len(points[0])):
                     sum_of_distances[partial_result[idx]][dim] += points[idx][dim]
 
-            # calculando a nova posição dos centróides
+            #calculating the new position to centroids
             new_centroids_positions = [
                 [sum_of_distances[i][k] / elements_per_centroid[i] for k in range(len(points[0]))] for i in
                 range(self.__n_clusters)]
 
-            # verificando se o conjunto convergiu
+            # verifying if the model converged
             if new_centroids_positions == self.__centroids_positions:
                 return self.__centroids_positions
 
