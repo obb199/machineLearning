@@ -36,7 +36,6 @@ class k_means:
             elements_per_centroid = [0 for _ in range(self.__n_clusters)]
             sum_of_distances = [[0 for _ in points[0]] for _ in range(self.__n_clusters)]
 
-            # calculando em qual centróide cada ponto está mais próximo
             #calculating what centroid is closer to any point 
             partial_result = [index_smaller_element(p) for p in distance_points]
 
