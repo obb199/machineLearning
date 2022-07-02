@@ -36,7 +36,7 @@ def check_winner(board):
     if board[0][0] == board[1][1] == board[2][2] != 0:
         return board[0][0]
     if board[0][2] == board[1][1] == board[2][0] != 0:
-        return board[2][2]
+        return board[0][2]
 
     return 0
 
@@ -61,7 +61,18 @@ def randomized_game(board):
             return player+1
 
 
-def monte_carlo_simulation(board, n_simulations=150):
+def copy_board(board):
+    new_board = []
+    for line in board:
+        line_new_board = []
+        for element in line:
+            line_new_board.append(element)
+        new_board.append(line_new_board)
+
+    return new_board
+
+
+def monte_carlo_simulation(board, n_simulations=1000):
     results = []
     spaces = free_spaces(board)
 
@@ -70,12 +81,7 @@ def monte_carlo_simulation(board, n_simulations=150):
 
         for _ in range(n_simulations):
             # Creating a new board with no references from original board
-            new_board = []
-            for line in board:
-                line_new_board = []
-                for element in line:
-                    line_new_board.append(element)
-                new_board.append(line_new_board)
+            new_board = copy_board(board)
             new_board[i][j] = 2
             result = randomized_game(new_board)
 
@@ -83,13 +89,16 @@ def monte_carlo_simulation(board, n_simulations=150):
                 results[-1] += 5
             elif result == 1:
                 results[-1] += 1
-            else:
-                results[-1] -= 2
 
-    return spaces[argmax(results)]
+    if argmax(results) is not None:
+        return spaces[argmax(results)]
+    return None
 
 
 def argmax(vector):
+    if not vector:
+        return None
+
     idx_max = 0
     value_max = vector[0]
 
@@ -118,7 +127,8 @@ if __name__ == '__main__':
 
         else:
             alg_choice = monte_carlo_simulation(board_game)
-            board_game[alg_choice[0]][alg_choice[1]] = 2
+            if alg_choice is not None:
+                board_game[alg_choice[0]][alg_choice[1]] = 2
 
         if free_spaces(board_game) == 0:
             show_board(board_game)
@@ -133,3 +143,4 @@ if __name__ == '__main__':
 
         show_board(board_game)
         print()
+
